@@ -1,14 +1,14 @@
-# LiPo Charger with Arduino Uno/ Atmega 328 based development boards
+# Arduino-Based LiPo Battery Charger
 
-An Arduino Uno-based LiPo battery charging system with automatic calibration, menu navigation, and real-time monitoring.
+An Arduino Uno-based LiPo battery charging system with automatic calibration, real-time monitoring, and internal resistance measurement.
 
 ![Demo Image](assets/images/lcd_menu.png)
 
 ## Features
-- **Automatic Calibration**: Using internal AREF (1.1V) for precise ADC readings.
-- **Menu System**: Scrollable menu for presets, calibration, and settings.
+- **Automatic Calibration**: Fully automatic calibration using the Arduino's internal 1.1V reference and known shunt resistor value.
+- **Menu System**: Scrollable menu for presets, calibration, settings, and internal resistance measurement.
 - **Real-Time Monitoring**: Displays charging voltage, current, and time on a 16x2 LCD.
-- **Internal Resistance Measurement**: Assess battery health by measuring internal resistance.
+- **Internal Resistance Measurement**: Assesses battery health by measuring internal resistance.
 - **Save/Reset Settings**: Save and reset configurations via the menu system.
 - **Safety Features**: Over-voltage and over-current protection.
 
@@ -19,6 +19,8 @@ An Arduino Uno-based LiPo battery charging system with automatic calibration, me
 - LM2596 Buck Converter
 - Shunt Resistor (0.1 Ω)
 - Buzzer
+- Load Resistor (1 Ω, 5W)
+- MOSFET (N-channel) or Relay
 - Capacitors, Resistors, Inductor (see [Component List](Docs/ComponentList.md))
 
 ## Software Requirements
@@ -30,4 +32,4 @@ An Arduino Uno-based LiPo battery charging system with automatic calibration, me
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/Synthesizer248/arduino_lipo_charger.git
+   git clone https://github.com/yourusername/arduino_lipo_charger.git
