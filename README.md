@@ -19,7 +19,7 @@ An Arduino Uno-based LiPo battery charging system with automatic calibration, me
 - LM2596 Buck Converter
 - Shunt Resistor (0.1 Ω)
 - Buzzer
-- Capacitors, Resistors, Inductor (see [Component List](docs/ComponentList.md))
+- Capacitors, Resistors, Inductor (see [Component List](Docs/ComponentList.md))
 
 ## Software Requirements
 - Arduino IDE
