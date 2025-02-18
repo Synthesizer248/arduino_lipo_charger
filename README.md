@@ -1,4 +1,4 @@
-# LiPo Charger with Arduino Uno
+# LiPo Charger with Arduino Uno/ Atmega 328 based development boards
 
 An Arduino Uno-based LiPo battery charging system with automatic calibration, menu navigation, and real-time monitoring.
 
