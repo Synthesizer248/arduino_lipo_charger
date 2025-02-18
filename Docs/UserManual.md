@@ -17,3 +17,8 @@
 ## Charging
 - Place the LiPo battery in the charging circuit.
 - Monitor the charging process on the LCD display.
+
+- ## Caculating internal resistance of battery
+- Place the LiPo battery in the charging circuit.
+- Use the rotary encoder to scroll through the menu.
+- Press the encoder button to select options.
