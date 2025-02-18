@@ -37,7 +37,7 @@ real-time monitoring, and internal resistance measurement.
 1. Clone this repository:
    ```bash
    git clone https://github.com/Synthesizer248/arduino_lipo_charger.git
-   Open the src/LiPoCharger.ino file in the Arduino IDE.
+   Open the src/Main.ino file  in the same directory of all other files using Arduino IDE
 2. build the circuit first !.
 2. Install required libraries via the Library Manager in Arduino IDE.
 3. Upload the code to your Arduino Uno/Atmega328 compatible board.
