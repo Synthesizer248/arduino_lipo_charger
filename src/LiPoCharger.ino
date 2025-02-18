@@ -26,16 +26,13 @@ float minChargingVoltage = 3.0; // Minimum safe charging voltage
 float nominalChargingVoltage = 3.7;
 int ratedCapacitymAh = 1000;
 int typicalCapacitymAh = 1200;
-float chargeCurrent = 0.5; // Default charging current in Amps
+float chargeCurrent = 0.0; // Measured charging current in Amps
 float targetChargeCurrent = 0.5; // Target charging current for CC mode
-float batteryVoltage = 0;
-float chargeTimeRequired = 0;
-float healthIndex = 0;
-
-float openCircuitVoltage = 0;
-float loadedVoltage = 0;
-float internalResistance = 0;
-float loadCurrent = 0;
+float batteryVoltage = 0.0; // Measured battery voltage
+float openCircuitVoltage = 0.0;
+float loadedVoltage = 0.0;
+float internalResistance = 0.0;
+float loadCurrent = 0.0;
 float loadResistance = 1.0;
 
 int menuState = 0;
@@ -47,10 +44,11 @@ const float MAX_SAFE_CURRENT = 2.0; // Maximum safe charging current (in Amps)
 const float MAX_BATTERY_VOLTAGE = 4.2; // Maximum safe battery voltage (in Volts)
 
 bool isCharging = false; // Tracks whether the system is currently charging
+int pwmDutyCycle = 0; // Tracks the current PWM duty cycle
 
 void setup() {
   // Initialize Serial Communication for Debugging
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   // Initialize Pins
   pinMode(BUZZER_PIN, OUTPUT);
@@ -65,11 +63,10 @@ void setup() {
   lcd.begin();
   lcd.backlight();
   lcd.clear();
-  lcd.print(" <=Synthesizer248=> ");
-  delay(1000);
+  lcd.print("=Synthesizer248=");
   lcd.clear();
-  lcd.print("SynthesizerLiPo Charger");
-  delay(1000);
+  lcd.print("LiPo Charger v0.1");
+  delay(2000);
   lcd.clear();
 
   // Initialize INA219
@@ -101,7 +98,7 @@ void loop() {
     } else {
       encoderValue--;
     }
-    tone(BUZZER_PIN, 1000, 50);
+    tone(BUZZER_PIN, 1000, 50); // Audible feedback for encoder rotation
   }
   lastEncoderValue = clkState;
 
@@ -123,8 +120,8 @@ void loop() {
 void softStart() {
   static bool softStartComplete = false;
   if (!softStartComplete) {
-    for (int pwm = 0; pwm <= 255; pwm += 5) {
-      analogWrite(LM2596_PWM_PIN, pwm);
+    for (pwmDutyCycle = 0; pwmDutyCycle <= 255; pwmDutyCycle += 5) {
+      analogWrite(LM2596_PWM_PIN, pwmDutyCycle);
       delay(50); // Gradual increase over time
     }
     softStartComplete = true;
@@ -154,24 +151,27 @@ void chargeBattery() {
   if (batteryVoltage < maxChargingVoltage) {
     // Constant Current (CC) Mode
     if (chargeCurrent < targetChargeCurrent) {
-      analogWrite(LM2596_PWM_PIN, analogRead(LM2596_PWM_PIN) + 1); // Increase PWM duty cycle
+      pwmDutyCycle = constrain(pwmDutyCycle + 1, 0, 255); // Increase PWM duty cycle smoothly
     } else if (chargeCurrent > targetChargeCurrent) {
-      analogWrite(LM2596_PWM_PIN, analogRead(LM2596_PWM_PIN) - 1); // Decrease PWM duty cycle
+      pwmDutyCycle = constrain(pwmDutyCycle - 1, 0, 255); // Decrease PWM duty cycle smoothly
     }
   } else {
     // Constant Voltage (CV) Mode
     if (batteryVoltage > maxChargingVoltage) {
-      analogWrite(LM2596_PWM_PIN, analogRead(LM2596_PWM_PIN) - 1); // Decrease PWM duty cycle
+      pwmDutyCycle = constrain(pwmDutyCycle - 1, 0, 255); // Decrease PWM duty cycle smoothly
     } else if (batteryVoltage < maxChargingVoltage) {
-      analogWrite(LM2596_PWM_PIN, analogRead(LM2596_PWM_PIN) + 1); // Increase PWM duty cycle
+      pwmDutyCycle = constrain(pwmDutyCycle + 1, 0, 255); // Increase PWM duty cycle smoothly
     }
   }
 
+  // Apply PWM Duty Cycle
+  analogWrite(LM2596_PWM_PIN, pwmDutyCycle);
+
   // Check if charging has started or stopped
-  if (analogRead(LM2596_PWM_PIN) > 0 && !isCharging) {
+  if (pwmDutyCycle > 0 && !isCharging) {
     startChargingAlert(); // Trigger charging start alert
     isCharging = true;
-  } else if (analogRead(LM2596_PWM_PIN) == 0 && isCharging) {
+  } else if (pwmDutyCycle == 0 && isCharging) {
     stopChargingAlert(); // Trigger charging stop alert
     isCharging = false;
   }
@@ -180,16 +180,17 @@ void chargeBattery() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Chg: ");
-  lcd.print(chargeCurrent);
+  lcd.print(chargeCurrent, 2); // Display current with 2 decimal places
   lcd.print("A");
   lcd.setCursor(0, 1);
   lcd.print("Bat: ");
-  lcd.print(batteryVoltage);
+  lcd.print(batteryVoltage, 2); // Display voltage with 2 decimal places
   lcd.print("V");
 }
 
 void stopCharging() {
-  analogWrite(LM2596_PWM_PIN, 0); // Turn off PWM
+  pwmDutyCycle = 0; // Stop PWM output
+  analogWrite(LM2596_PWM_PIN, pwmDutyCycle);
   digitalWrite(LOAD_PIN, LOW); // Turn off load
 }
 
@@ -218,7 +219,7 @@ void measureInternalResistance() {
   lcd.setCursor(0, 0);
   lcd.print("Int. Resistance:");
   lcd.setCursor(0, 1);
-  lcd.print(internalResistance);
+  lcd.print(internalResistance, 2); // Display resistance with 2 decimal places
   lcd.print(" Ohms");
   tone(BUZZER_PIN, 2000, 200); // Buzzer alert for internal resistance measurement
   delay(2000);
@@ -230,20 +231,20 @@ void updateDisplay() {
     case 0:
       lcd.setCursor(0, 0);
       lcd.print("Chg: ");
-      lcd.print(chargeCurrent);
+      lcd.print(chargeCurrent, 2);
       lcd.print("A");
       lcd.setCursor(0, 1);
       lcd.print("Bat: ");
-      lcd.print(batteryVoltage);
+      lcd.print(batteryVoltage, 2);
       lcd.print("V");
       break;
     case 1:
       lcd.setCursor(0, 0);
       lcd.print("Set Max V:");
-      lcd.print(maxChargingVoltage);
+      lcd.print(maxChargingVoltage, 1);
       lcd.setCursor(0, 1);
       lcd.print("Min V:");
-      lcd.print(minChargingVoltage);
+      lcd.print(minChargingVoltage, 1);
       break;
     case 2:
       lcd.setCursor(0, 0);
