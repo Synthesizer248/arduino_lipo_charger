@@ -2,7 +2,7 @@
 
 | Component                     | Quantity | Notes                                   |
 |-------------------------------|----------|-----------------------------------------|
-| **Arduino Uno**               | 1        | Microcontroller                        |
+| **Arduino Uno/nano/pro-mini** | 1        | Microcontroller                        |
 | **16x2 LCD with I2C Module**  | 1        | For displaying information             |
 | **Rotary Encoder**            | 1        | For menu navigation                    |
 | **Buzzer**                    | 1        | For feedback sounds                    |
