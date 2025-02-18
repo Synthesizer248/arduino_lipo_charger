@@ -7,7 +7,9 @@
 | **Rotary Encoder**            | 1        | For menu navigation                    |
 | **Buzzer**                    | 1        | For feedback sounds                    |
 | **LM2596 Buck Converter**     | 1        | Modified for CV/CC control             |
+| **IRFz44n**                   | 1        | n-channle mosfet for driving load resistor |            |
 | **Shunt Resistor**            | 1        | 0.1 Ω for current measurement          |
+| **Load Resistor**             | 2        | For calculating batterys internal resistance |
 | **Electrolytic Capacitor**    | 2        | 100 µF (input), 220 µF (output)        |
 | **Ceramic Capacitor**         | 4        | 0.1 µF (input/output filtering)        |
 | **Inductor**                  | 1        | 150 µH or 220 µH                       |
