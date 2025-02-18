@@ -1,12 +1,13 @@
 
 ---
 
-####`LICENSE`**
-license for This project. For open-source projects **Synthesizer'Workshop License**
+#### **2. `LICENSE`**
+Choose a license for your project. For open-source projects, the **MIT License** is a popular choice.
 
-Synthesizer'Workshop
+```text
+MIT License
 
-Copyright (c) 2023 navasare
+Copyright (c) 2023 Synthesizer248
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
