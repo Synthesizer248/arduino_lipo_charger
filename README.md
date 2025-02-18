@@ -30,4 +30,4 @@ An Arduino Uno-based LiPo battery charging system with automatic calibration, me
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/Synthesizer248/LiPo-Charger-Arduino.git
+   git clone https://github.com/Synthesizer248/arduino_lipo_charger.git
