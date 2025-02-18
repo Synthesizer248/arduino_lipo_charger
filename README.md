@@ -1,11 +1,7 @@
 # Arduino-Based LiPo Battery Charger
 
-An Arduino Uno-based LiPo battery charging system with automatic calibration, real-time monitoring, and internal resistance measurement.
- *usage :
-1) use given schematic build project
-2) Open the src/LiPoCharger.ino file in the Arduino IDE.
-3) Install required libraries via the Library Manager in Arduino IDE.
-4) Upload the code to your Arduino Uno/nano/pro-mini.
+An Arduino Uno/Atmega328 compatible board -based LiPo battery charging system with automatic calibration,
+real-time monitoring, and internal resistance measurement.
 
 ![Demo Image](assets/images/lcd_menu.png)
 
@@ -41,3 +37,7 @@ An Arduino Uno-based LiPo battery charging system with automatic calibration, re
 1. Clone this repository:
    ```bash
    git clone https://github.com/Synthesizer248/arduino_lipo_charger.git
+   Open the src/LiPoCharger.ino file in the Arduino IDE.
+2. build the circuit first !.
+2. Install required libraries via the Library Manager in Arduino IDE.
+3. Upload the code to your Arduino Uno/Atmega328 compatible board.
